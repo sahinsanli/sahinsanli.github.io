@@ -4,38 +4,310 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şahin Şanlı — Mobil Geliştirici</title>
-<meta name="description" content="Şahin Şanlı — iOS & Flutter developer, QA test automation. Karadeniz Technical University Software Engineering graduate.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- WebGL background: raymarched crystal journey -->
-<canvas id="bg" aria-hidden="true"></canvas>
+<!-- grain overlay -->
+<div class="grain" aria-hidden="true"></div>
 
-<!-- UI overlay fragment (sections, nav, loading) injected by integrator -->
-<div id="ui-root"></div>
-<script src="shader-loader.js"></script>
-<script>
-/* inject UI fragment, THEN load ui.js so it initializes after DOM exists */
-(function () {
-  var root = document.getElementById('ui-root');
-  fetch('ui.html')
-    .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
-    .then(function (html) { root.innerHTML = html; })
-    .catch(function (e) {
-      console.error('ui.html inject failed', e);
-      root.innerHTML = '<p style="color:#f2f2f7;padding:2rem">UI yüklenemedi.</p>';
-    })
-    .then(function () {
-      var s = document.createElement('script');
-      s.src = 'ui.js';
-      document.body.appendChild(s);
-    });
-})();
-</script>
+<!-- progress bar -->
+<div class="progress-bar" aria-hidden="true"><span id="progressBar"></span></div>
+
+<!-- custom cursor -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- preloader -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader-inner">
+    <span class="pre-name">ŞS</span>
+    <span class="pre-bar"><span id="preBar"></span></span>
+  </div>
+</div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a class="nav-logo" href="#top" data-cursor>
+    <span class="logo-mark">ŞS</span>
+    <span class="logo-text">Şahin&nbsp;Şanlı</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <a href="#work" data-i18n="navWork" data-cursor>İşler</a>
+    <a href="#about" data-i18n="navAbout" data-cursor>Hakkımda</a>
+    <a href="#experience" data-i18n="navExperience" data-cursor>Deneyim</a>
+    <a href="#contact" data-i18n="navContact" data-cursor>İletişim</a>
+  </nav>
+  <div class="nav-right">
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+      <span data-lang-label>EN</span>
+    </button>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <nav>
+    <a href="#work" data-i18n="navWork">İşler</a>
+    <a href="#about" data-i18n="navAbout">Hakkımda</a>
+    <a href="#experience" data-i18n="navExperience">Deneyim</a>
+    <a href="#contact" data-i18n="navContact">İletişim</a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="grid-lines"></div>
+    <div class="noise-vignette"></div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow reveal">
+      <span class="pulse-dot"></span>
+      <span data-i18n="heroAvailable">Yeni fırsatlara açığım</span>
+    </p>
+
+    <h1 class="hero-title">
+      <span class="line" data-text="ŞAHİN"><span>ŞAHİN</span></span>
+      <span class="line stroke" data-text="ŞANLI"><span>ŞANLI</span></span>
+    </h1>
+
+    <p class="hero-roles">
+      <span data-i18n="role1">iOS Geliştirici</span><i>✦</i>
+      <span data-i18n="role2">Flutter Geliştirici</span><i>✦</i>
+      <span data-i18n="role3">QA Otomasyon</span>
+    </p>
+
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary" data-cursor>
+        <span data-i18n="ctaWork">İşlerimi gör</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="mailto:sahinsanli123@gmail.com" class="btn btn-ghost" data-cursor>
+        <span data-i18n="ctaContact">İletişime geç</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <span data-i18n="scrollHint">Kaydır</span>
+    <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="1" y="1" width="12" height="20" rx="6" stroke="currentColor" stroke-width="1.2"/><circle class="wheel" cx="7" cy="6" r="2" fill="currentColor"/></svg>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <span>SWIFT</span><em>✦</em><span>FLUTTER</span><em>✦</em><span>SWIFTUI</span><em>✦</em><span>PLAYWRIGHT</span><em>✦</em><span>FIREBASE</span><em>✦</em><span>TYPESCRIPT</span><em>✦</em><span>MAPKIT</span><em>✦</em><span>DART</span><em>✦</em>
+      <span>SWIFT</span><em>✦</em><span>FLUTTER</span><em>✦</em><span>SWIFTUI</span><em>✦</em><span>PLAYWRIGHT</span><em>✦</em><span>FIREBASE</span><em>✦</em><span>TYPESCRIPT</span><em>✦</em><span>MAPKIT</span><em>✦</em><span>DART</span><em>✦</em>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section class="section" id="work">
+  <div class="section-head reveal">
+    <span class="sec-index">01</span>
+    <h2 class="sec-title"><span data-i18n="workTitle">Seçili</span> <span class="accent" data-i18n="workTitleAccent">İşler</span></h2>
+    <p class="sec-sub" data-i18n="workSub">Uçtan uca geliştirdiğim mobil uygulamalar</p>
+  </div>
+
+  <div class="projects">
+
+    <a class="project reveal" href="https://github.com/sahinsanli" target="_blank" rel="noopener" data-cursor data-tilt>
+      <div class="project-num">P·01</div>
+      <div class="project-main">
+        <div class="project-tags">
+          <span>SwiftUI</span><span>SwiftData</span><span>Gemini API</span>
+        </div>
+        <h3>SoundNoter</h3>
+        <p data-i18n="p1desc">Google Gemini API ile ses kayıtlarını otomatik transkribe eden ve özetleyen iOS uygulaması. SwiftData ile tam offline erişim. Mezuniyet projesi.</p>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2026</span>
+        <span class="project-type">iOS</span>
+        <span class="project-arrow">↗</span>
+      </div>
+    </a>
+
+    <a class="project reveal" href="https://github.com/sahinsanli" target="_blank" rel="noopener" data-cursor data-tilt>
+      <div class="project-num">P·02</div>
+      <div class="project-main">
+        <div class="project-tags">
+          <span>Flutter</span><span>TMDB API</span><span>Firebase</span>
+        </div>
+        <h3>CineSync</h3>
+        <p data-i18n="p2desc">Film izleme listesi uygulaması. Clean Architecture, Repository pattern ve dependency injection; state için Provider, ağ için Dio, bulut senkronizasyonu için Firebase Auth + Firestore.</p>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <span class="project-type">Flutter</span>
+        <span class="project-arrow">↗</span>
+      </div>
+    </a>
+
+    <a class="project reveal" href="https://github.com/sahinsanli" target="_blank" rel="noopener" data-cursor data-tilt>
+      <div class="project-num">P·03</div>
+      <div class="project-main">
+        <div class="project-tags">
+          <span>UIKit</span><span>MapKit</span><span>AVFoundation</span><span>Firebase</span>
+        </div>
+        <h3>Soundmap</h3>
+        <p data-i18n="p3desc">Harita tabanlı ses keşif uygulaması — harita entegrasyonu, ses kayıt/oynatma, tüm arayüz ve Firebase altyapısı dahil tek başıma, 1 ayda tasarımından çalışan ürüne taşıdım.</p>
+      </div>
+      <div class="project-meta">
+        <span class="project-year">2025</span>
+        <span class="project-type">iOS</span>
+        <span class="project-arrow">↗</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ================= ABOUT + SKILLS ================= -->
+<section class="section" id="about">
+  <div class="section-head reveal">
+    <span class="sec-index">02</span>
+    <h2 class="sec-title"><span data-i18n="aboutTitle">Hakkımda &</span> <span class="accent" data-i18n="aboutTitleAccent">Yetenekler</span></h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p class="lead" data-i18n="aboutLead">Karadeniz Teknik Üniversitesi Yazılım Mühendisliği mezunuyum.</p>
+      <p data-i18n="aboutP1">Native iOS (Swift/UIKit) ve Flutter ile uçtan uca mobil uygulama geliştiriyorum. Soundmap uygulamasını harita entegrasyonu, ses kayıt/oynatma ve Firebase altyapısı dahil tek başıma geliştirdim.</p>
+      <p data-i18n="aboutP2">Playwright/TypeScript ile ~80 UI ve regresyon test senaryosu kodlayarak yazılım kalite süreçlerine katkı sağladım. Hızlı öğrenen, analitik ve sahiplenici bir yaklaşımla çalışıyorum.</p>
+      <div class="about-facts">
+        <div class="fact">
+          <strong>3+</strong>
+          <span data-i18n="fact1">Staj & proje</span>
+        </div>
+        <div class="fact">
+          <strong>~80</strong>
+          <span data-i18n="fact2">Otomasyon testi</span>
+        </div>
+        <div class="fact">
+          <strong>2</strong>
+          <span data-i18n="fact3">Platform — iOS & Flutter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-panel reveal">
+      <h3 class="panel-title" data-i18n="skillsTitle">Yetenekler</h3>
+      <div class="skill-group">
+        <h4 data-i18n="skillCat1">Mobil</h4>
+        <div class="chips">
+          <span class="chip">Swift</span><span class="chip">UIKit</span><span class="chip">SwiftUI</span><span class="chip">Flutter</span><span class="chip">Dart</span><span class="chip">Provider</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4 data-i18n="skillCat2">Kalite & Web</h4>
+        <div class="chips">
+          <span class="chip">Playwright</span><span class="chip">TypeScript</span><span class="chip">Regression Testing</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4 data-i18n="skillCat3">Backend & Araçlar</h4>
+        <div class="chips">
+          <span class="chip">Firebase Auth</span><span class="chip">Cloud Firestore</span><span class="chip">Gemini API</span><span class="chip">TMDB API</span><span class="chip">Linux</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4 data-i18n="skillCat4">Mimari & Dil</h4>
+        <div class="chips">
+          <span class="chip">Clean Architecture</span><span class="chip">Repository Pattern</span><span class="chip">Dependency Injection</span><span class="chip">C / C++ / Java</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section class="section" id="experience">
+  <div class="section-head reveal">
+    <span class="sec-index">03</span>
+    <h2 class="sec-title"><span data-i18n="expTitle">Deneyim &</span> <span class="accent" data-i18n="expTitleAccent">Eğitim</span></h2>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-when">09/2025 — 01/2026</div>
+      <div class="tl-body">
+        <h3 data-i18n="e1role">Uzun Dönem Yazılım Mühendisliği Stajyeri</h3>
+        <span class="tl-org">Deka Teknoloji</span>
+        <p data-i18n="e1desc">Hollanda merkezli Tuula web uygulaması için Playwright ve TypeScript ile önceden planlanmış ~80 test senaryosunu sıfırdan kodladım; lokalde regresyon ve UI testleri geliştirerek test kapsamını genişlettim.</p>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-when">07/2025 — 09/2025</div>
+      <div class="tl-body">
+        <h3 data-i18n="e2role">iOS Geliştirici Stajyeri</h3>
+        <span class="tl-org">Kafein Yazılım</span>
+        <p data-i18n="e2desc">Soundmap'i UIKit, CoreLocation, MapKit ve AVFoundation ile uçtan uca tek başıma geliştirdim; 1 ayda tasarımdan çalışan ürüne taşıdım.</p>
+      </div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-when">07/2024 — 08/2024</div>
+      <div class="tl-body">
+        <h3 data-i18n="e3role">Flutter Geliştirici Stajyeri</h3>
+        <span class="tl-org">Bilsoft Yazılım</span>
+        <p data-i18n="e3desc">Şirketin ön muhasebe yazılımı için muhasebe terimlerini öğreten Flutter uygulamasını sıfırdan tasarlayıp geliştirdim; kurumsal kimliğe uygun özel arayüz uyguladım.</p>
+      </div>
+    </div>
+
+    <div class="tl-item reveal edu">
+      <div class="tl-dot"></div>
+      <div class="tl-when">2022 — 2026</div>
+      <div class="tl-body">
+        <h3 data-i18n="eduRole">Yazılım Mühendisliği</h3>
+        <span class="tl-org" data-i18n="eduOrg">Karadeniz Teknik Üniversitesi</span>
+        <p data-i18n="eduDesc">Lisans derecesi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section contact" id="contact">
+  <div class="contact-inner reveal">
+    <p class="contact-eyebrow" data-i18n="contactEyebrow">Bir sonraki projen mi var?</p>
+    <h2 class="contact-title">
+      <span data-i18n="contactLine1">Birlikte bir şeyler</span><br>
+      <span class="stroke" data-i18n="contactLine2">inşa edelim</span>
+    </h2>
+    <a class="contact-mail" href="mailto:sahinsanli123@gmail.com" data-cursor>sahinsanli123@gmail.com</a>
+    <div class="contact-links">
+      <a href="https://github.com/sahinsanli" target="_blank" rel="noopener" data-cursor>GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/şahin-şanlı/" target="_blank" rel="noopener" data-cursor>LinkedIn ↗</a>
+      <a href="tel:+905316772580" data-cursor>+90 531 677 25 80</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <span>© 2026 Şahin Şanlı</span>
+  <span class="foot-note" data-i18n="footerNote">Saf HTML/CSS/JS ile elle yapıldı</span>
+  <button class="to-top" id="toTop" aria-label="Back to top" data-cursor>↑</button>
+</footer>
+
+<script src="i18n.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
